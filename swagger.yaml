@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Marketplace API
+  title: Heureka Marketplace API
   description: Public documentation of Heureka Marketplace API services.
 servers:
   - url: 'https://ssl.heureka.sk/'
@@ -45,6 +45,7 @@ components:
       in: path
       name: apiId
       description: Partner's API key
+      required: true
       schema:
         type: string
         example: a12BC3d45
@@ -63,6 +64,7 @@ components:
       content:
         application/json:
           schema:
+            type: object
             properties:
               message:
                 type: string
