@@ -1,0 +1,77 @@
+openapi: 3.0.0
+
+info:
+paths:
+
+components:
+  parameters:
+    productId:
+      name: products[0][id]
+      in: query
+      required: true
+      description: Unique identifier of the product
+      schema:
+        type: string
+        example: 123
+    productCount:
+      name: products[0][count]
+      in: query
+      description: Number of ordered products
+      schema:
+        type: string
+        example: 1
+
+  schemas:
+    ProductsAvailability:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: ABC123
+              available:
+                type: boolean
+                example: true
+              count:
+                type: integer
+                example: 3
+              delivery:
+                type: integer
+                example: 0
+              name:
+                type: string
+                example: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
+              price:
+                type: number
+                format: double
+                example: 10.99
+              related:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: "Free gift bag"
+              priceTotal:
+                type: number
+                format: double
+                example: 10.99
+
+  responses:
+    ProductsAvailabilityResponse:
+      description: Returns the products' availability
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../../common/components.yml#/components/schemas/SuccessBaseResponse'
+              - properties:
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/ProductsAvailability'
+                type: object

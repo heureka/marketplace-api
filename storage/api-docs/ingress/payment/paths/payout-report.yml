@@ -1,0 +1,34 @@
+# /api/cart/{apiId}/1/payout-report:
+post:
+  summary: Get a day's payout report in CSV format
+  description:
+      "Get all payout data for a day in CSV format.\n\n
+      In the CSV data are separated by a semicolon (;).\n\n
+      The file includes the following columns (in the partner's respective language):\n\n
+      Order number, Order date, Payout type, Payout gross price,
+      Delivery fee, Gross commission, Total
+      amount, Payout amount.\n\n
+      For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number"
+  tags:
+    - Ingress - Payout Report
+  parameters:
+    - $ref: '../../../common/components.yml#/components/parameters/apiKeyPathParameter'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [ day ]
+          properties:
+            day:
+              type: string
+              format: date
+              example: 2023-09-20
+              description: Date of payout
+  responses:
+    200:
+      $ref: '../components.yml#/components/responses/SuccessResponse'
+    422:
+      $ref: '../components.yml#/components/responses/ValidationErrorResponse'
+    500:
+      description: A server error happened during handling of request.

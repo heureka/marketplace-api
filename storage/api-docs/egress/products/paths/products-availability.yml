@@ -1,0 +1,16 @@
+# https://www.exaple.com/api/1/products/availability:
+get:
+  summary: The method returns current data about the requested products.
+  tags:
+    - Egress - Products Availability
+  parameters:
+    - $ref: '../../../common/components.yml#/components/parameters/apiKeyPathParameter'
+    - $ref: '../components.yml#/components/parameters/productId'
+    - $ref: '../components.yml#/components/parameters/productCount'
+  responses:
+    200:
+      $ref: '../components.yml#/components/responses/ProductsAvailabilityResponse'
+    400:
+      $ref: '../../../common/components.yml#/components/responses/BadRequestResponse'
+    404:
+      $ref: '../../../common/components.yml#/components/responses/NotFoundResponse'

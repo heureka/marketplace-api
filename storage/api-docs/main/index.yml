@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Heureka Marketplace API
+  description: Public documentation of Heureka Marketplace API services.
+servers:
+  - url: https://ssl.heureka.sk/
+
+paths:
+  # EGRESS
+  /api/1/products/availability:
+    $ref: '../egress/products/paths/products-availability.yml'
+
+  # INGRESS
+  /api/cart/{apiId}/1/payout-report:
+    $ref: '../ingress/payment/paths/payout-report.yml'
