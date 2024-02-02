@@ -1,4 +1,4 @@
-# /api/cart/{apiId}/1/payout-report:
+# /api/cart/{apiKey}/1/payout-report:
 post:
   summary: Get a day's payout report in CSV format
   description:

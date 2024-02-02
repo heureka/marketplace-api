@@ -5,7 +5,7 @@ paths:
 
 components:
   parameters:
-    apiKeyPathParameter:
+    apiKeyHeaderParameter:
       name: apiKey
       in: header
       required: true
@@ -14,6 +14,14 @@ components:
         type: string
         example: e9a09238d23fb504c663d06553ca4838
 
+    apiKeyPathParameter:
+      name: apiKey
+      in: path
+      required: true
+      description: API key from Partner Portal
+      schema:
+        type: string
+        example: e9a09238d23fb504c663d06553ca4838
   schemas:
     BaseErrorResponse:
       description: Error
@@ -36,6 +44,7 @@ components:
           example: [ ]
     SuccessBaseResponse:
       description: Success
+      type: object
       properties:
         code:
           type: integer
@@ -51,9 +60,6 @@ components:
         version:
           type: string
           example: v1.0.0
-        data:
-          type: array
-      type: object
 
   responses:
     BadRequestResponse:
@@ -61,6 +67,7 @@ components:
       content:
         application/json:
           schema:
+            type: object
             allOf:
               - $ref: '#/components/schemas/BaseErrorResponse'
               - type: object
@@ -76,6 +83,7 @@ components:
       content:
         application/json:
           schema:
+            type: object
             allOf:
               - $ref: '#/components/schemas/BaseErrorResponse'
               - type: object
@@ -91,6 +99,7 @@ components:
       content:
         application/json:
           schema:
+            type: object
             allOf:
               - $ref: '#/components/schemas/BaseErrorResponse'
               - type: object

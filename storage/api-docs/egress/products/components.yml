@@ -68,6 +68,7 @@ components:
       content:
         application/json:
           schema:
+            type: object
             allOf:
               - $ref: '../../common/components.yml#/components/schemas/SuccessBaseResponse'
               - properties:

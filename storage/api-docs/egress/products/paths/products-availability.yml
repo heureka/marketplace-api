@@ -1,10 +1,24 @@
 # https://www.exaple.com/api/1/products/availability:
 get:
   summary: The method returns current data about the requested products.
+  description: |
+    The method returns current data about the requested products.
+    ##  Frequently asked questions
+    ### The store no longer sells the product. What should the answer look like?
+    Return available to false.
+    ### The store sells the goods, but does not know how long it will be able to deliver the goods. What should the answer look like?
+    Available another must be true and delivery or must be -1 appropriate text description. In general, what is in the XML feed must be available for purchase on Heureka as well.
+    ### A customer requests 3 of an item, but the store only has two. What should the answer look like?
+    in count Enter a value of 2 . The customer will be notified of this fact.
+    ### The customer requests 3 pieces, the store has 2 in stock and 1 will arrive in 5 days. What should the delivery value look like?
+    value The delivery must be the worst possible, so if the store is able to deliver all 3 pieces, it will value 5 .
+    ### The customer requests 1 piece of the item, but the store has 10 available. So the store will list 10 in the count?
+    Not. value The count must be max. the number of pieces that the customer requires.
+
   tags:
     - Egress - Products Availability
   parameters:
-    - $ref: '../../../common/components.yml#/components/parameters/apiKeyPathParameter'
+    - $ref: '../../../common/components.yml#/components/parameters/apiKeyHeaderParameter'
     - $ref: '../components.yml#/components/parameters/productId'
     - $ref: '../components.yml#/components/parameters/productCount'
   responses:

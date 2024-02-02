@@ -12,5 +12,5 @@ paths:
     $ref: '../egress/products/paths/products-availability.yml'
 
   # INGRESS
-  /api/cart/{apiId}/1/payout-report:
+  /api/cart/{apiKey}/1/payout-report:
     $ref: '../ingress/payment/paths/payout-report.yml'
