@@ -82,6 +82,9 @@
                       }
                     },
                     {
+                      "type": "object"
+                    },
+                    {
                       "properties": {
                         "data": {
                           "allOf": [
@@ -187,6 +190,7 @@
                   "allOf": [
                     {
                       "description": "Error",
+                      "type": "object",
                       "properties": {
                         "code": {
                           "type": "integer",
@@ -198,6 +202,10 @@
                         },
                         "errors": {
                           "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "nullable": true,
                           "example": []
                         },
                         "version": {
@@ -206,6 +214,9 @@
                         },
                         "data": {
                           "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
                           "nullable": true,
                           "example": []
                         }

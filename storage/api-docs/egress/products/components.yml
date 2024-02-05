@@ -71,6 +71,7 @@ components:
             type: object
             allOf:
               - $ref: '../../common/components.yml#/components/schemas/SuccessBaseResponse'
+              - type: object
               - properties:
                   data:
                     allOf:

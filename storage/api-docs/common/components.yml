@@ -13,7 +13,6 @@ components:
       schema:
         type: string
         example: e9a09238d23fb504c663d06553ca4838
-
     apiKeyPathParameter:
       name: apiKey
       in: path
@@ -22,9 +21,11 @@ components:
       schema:
         type: string
         example: e9a09238d23fb504c663d06553ca4838
+
   schemas:
     BaseErrorResponse:
       description: Error
+      type: object
       properties:
         code:
           type: integer
@@ -34,12 +35,17 @@ components:
           example: Internal Server Error
         errors:
           type: array
+          items:
+            type: string
+          nullable: true
           example: [ ]
         version:
           type: string
           example: v2.0.0
         data:
           type: array
+          items:
+            type: string
           nullable: true
           example: [ ]
     SuccessBaseResponse:
