@@ -68,38 +68,6 @@ components:
           example: v1.0.0
 
   responses:
-    BadRequestResponse:
-      description: 400 Bad request. When required parameters were not supplied
-      content:
-        application/json:
-          schema:
-            type: object
-            allOf:
-              - $ref: '#/components/schemas/BaseErrorResponse'
-              - type: object
-                properties:
-                  code:
-                    type: integer
-                    example: 400
-                  message:
-                    type: string
-                    example: 400 Bad Request
-    NotFoundResponse:
-      description: 404 record not found
-      content:
-        application/json:
-          schema:
-            type: object
-            allOf:
-              - $ref: '#/components/schemas/BaseErrorResponse'
-              - type: object
-                properties:
-                  code:
-                    type: integer
-                    example: 404
-                  message:
-                    type: string
-                    example: 404 Not Found
     ErrorResponse:
       description: 500 Internal Server Error
       content:

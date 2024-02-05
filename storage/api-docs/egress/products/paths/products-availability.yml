@@ -1,6 +1,6 @@
-# https://www.exaple.com/api/1/products/availability:
+# http://www.example-partner-api/api/1/products/availability
 get:
-  summary: The method returns current data about the requested products.
+  summary: The method returns current data about the requested products. http://www.example-partner-api/api/1/products/availability
   description: |
     The method returns current data about the requested products.
     ##  Frequently asked questions
@@ -19,12 +19,11 @@ get:
     - Egress - Products Availability
   parameters:
     - $ref: '../../../common/components.yml#/components/parameters/apiKeyHeaderParameter'
-    - $ref: '../components.yml#/components/parameters/productId'
-    - $ref: '../components.yml#/components/parameters/productCount'
+    - $ref: '../components.yml#/components/parameters/productId[0]'
+    - $ref: '../components.yml#/components/parameters/productCount[0]'
+    - $ref: '../components.yml#/components/parameters/productId[1]'
+    - $ref: '../components.yml#/components/parameters/productCount[1]'
+
   responses:
     200:
       $ref: '../components.yml#/components/responses/ProductsAvailabilityResponse'
-    400:
-      $ref: '../../../common/components.yml#/components/responses/BadRequestResponse'
-    404:
-      $ref: '../../../common/components.yml#/components/responses/NotFoundResponse'

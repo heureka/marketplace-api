@@ -5,10 +5,12 @@ info:
   description: Public documentation of Heureka Marketplace API services.
 servers:
   - url: https://ssl.heureka.sk/
+  - url: https://example.com/
 
 paths:
   # EGRESS
   /api/1/products/availability:
+    description: "http://www.example-partner-api"
     $ref: '../egress/products/paths/products-availability.yml'
 
   # INGRESS

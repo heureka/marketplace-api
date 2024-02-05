@@ -1,0 +1,311 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Heureka Marketplace API",
+    "description": "Public documentation of Heureka Marketplace API services."
+  },
+  "servers": [
+    {
+      "url": "https://ssl.heureka.sk/"
+    },
+    {
+      "url": "https://example.com/"
+    }
+  ],
+  "paths": {
+    "/api/1/products/availability": {
+      "description": "http://www.example-partner-api",
+      "get": {
+        "summary": "The method returns current data about the requested products. http://www.example-partner-api/api/1/products/availability",
+        "description": "The method returns current data about the requested products.\n##  Frequently asked questions\n### The store no longer sells the product. What should the answer look like?\nReturn available to false.\n### The store sells the goods, but does not know how long it will be able to deliver the goods. What should the answer look like?\nAvailable another must be true and delivery or must be -1 appropriate text description. In general, what is in the XML feed must be available for purchase on Heureka as well.\n### A customer requests 3 of an item, but the store only has two. What should the answer look like?\nin count Enter a value of 2 . The customer will be notified of this fact.\n### The customer requests 3 pieces, the store has 2 in stock and 1 will arrive in 5 days. What should the delivery value look like?\nvalue The delivery must be the worst possible, so if the store is able to deliver all 3 pieces, it will value 5 .\n### The customer requests 1 piece of the item, but the store has 10 available. So the store will list 10 in the count?\nNot. value The count must be max. the number of pieces that the customer requires.\n",
+        "tags": [
+          "Egress - Products Availability"
+        ],
+        "parameters": [
+          {
+            "name": "apiKey",
+            "in": "header",
+            "required": true,
+            "description": "API key from Partner Portal",
+            "schema": {
+              "type": "string",
+              "example": "e9a09238d23fb504c663d06553ca4838"
+            }
+          },
+          {
+            "name": "products[0][id]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "required": true,
+              "description": "Unique identifier of the product",
+              "example": 123
+            }
+          },
+          {
+            "name": "products[0][count]",
+            "in": "query",
+            "required": true,
+            "description": "Number of ordered pieces (always greater than 0)",
+            "schema": {
+              "type": "integer",
+              "required": true,
+              "description": "Number of ordered pieces (always greater than 0)",
+              "example": 10
+            }
+          },
+          {
+            "name": "products[1][id]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/paths/~1api~11~1products~1availability/get/parameters/1/schema"
+            }
+          },
+          {
+            "name": "products[1][count]",
+            "description": "Number of ordered pieces (always greater than 0)",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/paths/~1api~11~1products~1availability/get/parameters/2/schema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the products' availability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "description": "field with products",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "description": "Product ID",
+                            "type": "integer",
+                            "example": "ABC123",
+                            "required": true
+                          },
+                          "count": {
+                            "description": "number of ordered pieces (always greater than 0)",
+                            "type": "integer",
+                            "example": 3,
+                            "required": true
+                          },
+                          "available": {
+                            "description": "is the product available? ( false if the product cannot be ordered under any circumstances, otherwise true )",
+                            "type": "boolean",
+                            "example": true,
+                            "required": true
+                          },
+                          "delivery": {
+                            "description": "number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. \"on request\", \"within 2 days\".",
+                            "allOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ],
+                            "example": 0,
+                            "required": true
+                          },
+                          "name": {
+                            "description": "product name (max. 255 characters)",
+                            "type": "string",
+                            "example": "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814",
+                            "required": true
+                          },
+                          "price": {
+                            "description": "price of goods per piece (including VAT and all fees)",
+                            "type": "number",
+                            "format": "double",
+                            "example": 10.99,
+                            "required": true
+                          },
+                          "related": {
+                            "description": "related items to the product (This is a certain added value to the product that does not affect the price.)",
+                            "type": "array",
+                            "required": false,
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "description": "Item description",
+                                  "type": "string",
+                                  "example": "Free gift bag"
+                                }
+                              }
+                            }
+                          },
+                          "priceTotal": {
+                            "description": "total product price (quantity x price)",
+                            "type": "number",
+                            "format": "double",
+                            "example": 10.99,
+                            "required": true
+                          }
+                        }
+                      },
+                      "example": [
+                        {
+                          "id": "ABC123",
+                          "required": true,
+                          "count": 3,
+                          "available": true,
+                          "delivery": 0,
+                          "name": "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814",
+                          "price": 10.99,
+                          "related": {
+                            "title": "Free gift bag"
+                          },
+                          "priceTotal": 10.99
+                        },
+                        {
+                          "id": "DFC123",
+                          "count": 2,
+                          "available": true,
+                          "delivery": 1,
+                          "name": "Apple iPhone 10 45EA11111",
+                          "price": 14.99,
+                          "related": {
+                            "title": "Free gift bag yellow"
+                          },
+                          "priceTotal": 14.99
+                        }
+                      ]
+                    },
+                    "priceSum": {
+                      "description": "total price (for all products)",
+                      "type": "number",
+                      "format": "double",
+                      "required": true,
+                      "example": 25.98
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cart/{apiKey}/1/payout-report": {
+      "post": {
+        "summary": "Get a day's payout report in CSV format",
+        "description": "Get all payout data for a day in CSV format.\n\n In the CSV data are separated by a semicolon (;).\n\n The file includes the following columns (in the partner's respective language):\n\n Order number, Order date, Payout type, Payout gross price, Delivery fee, Gross commission, Total amount, Payout amount.\n\n For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number",
+        "tags": [
+          "Ingress - Payout Report"
+        ],
+        "parameters": [
+          {
+            "name": "apiKey",
+            "in": "path",
+            "required": true,
+            "description": "API key from Partner Portal",
+            "schema": {
+              "type": "string",
+              "example": "e9a09238d23fb504c663d06553ca4838"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "day"
+                ],
+                "properties": {
+                  "day": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-09-20T00:00:00.000Z",
+                    "description": "Date of payout"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payout Report CSV generated successfully.",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "description": "Payout data in CSV format",
+                  "type": "string",
+                  "example": "column1;column2;column3;...\ndata1;data2;data3;..."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Show validation error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Validation error(s)!"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "example": 422
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "The version of the API",
+                      "example": "v1.0.0"
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "a1b47cd1-1234-4ab2-a12b-1234bd0a4bc3"
+                    },
+                    "data": {
+                      "type": "array",
+                      "nullable": true,
+                      "example": [],
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "errors": {
+                      "type": "object",
+                      "properties": {
+                        "day": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "validation.required"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "A server error happened during handling of request."
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,62 +5,188 @@ paths:
 
 components:
   parameters:
-    productId:
+    productId[0]:
       name: products[0][id]
       in: query
       required: true
-      description: Unique identifier of the product
       schema:
-        type: string
-        example: 123
-    productCount:
+        $ref: '#/components/schemas/ProductId'
+    productCount[0]:
       name: products[0][count]
       in: query
-      description: Number of ordered products
+      required: true
+      description: Number of ordered pieces (always greater than 0)
       schema:
-        type: string
-        example: 1
+        $ref: '#/components/schemas/ProductCount'
+    productId[1]:
+      name: products[1][id]
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[1]:
+      name: products[1][count]
+      description: Number of ordered pieces (always greater than 0)
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ProductCount'
 
   schemas:
-    ProductsAvailability:
+    ProductId:
+      type: string
+      required: true
+      description: Unique identifier of the product
+      example: 123
+    ProductCount:
+      type: integer
+      required: true
+      description: Number of ordered pieces (always greater than 0)
+      example: 10
+
+    ProductsAvailabilityArray:
       type: object
       properties:
         products:
+          description: field with products
           type: array
+          items:
+            $ref: '#/components/schemas/ProductsAvailability'
+          example:
+            - id: ABC123
+              required: true
+              count: 3
+              available: true
+              delivery: 0
+              name: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
+              price: 10.99
+              related:
+                title: "Free gift bag"
+              priceTotal: 10.99
+            - id: DFC123
+              count: 2
+              available: true
+              delivery: 1
+              name: "Apple iPhone 10 45EA11111"
+              price: 14.99
+              related:
+                title: "Free gift bag yellow"
+              priceTotal: 14.99
+
+        priceSum:
+          description: total price (for all products)
+          type: number
+          format: double
+          required: true
+          example: 25.98
+
+    ProductsAvailability:
+      type: object
+      properties:
+        id:
+          description: Product ID
+          type: integer
+          example: ABC123
+          required: true
+        count:
+          description: number of ordered pieces (always greater than 0)
+          type: integer
+          example: 3
+          required: true
+        available:
+          description: is the product available? ( false if the product cannot be ordered under any circumstances, otherwise true )
+          type: boolean
+          example: true
+          required: true
+        delivery:
+          description: number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. "on request", "within 2 days".
+          allOf:
+            - type: string
+            - type: integer
+          example: 0
+          required: true
+        name:
+          description: product name (max. 255 characters)
+          type: string
+          example: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
+          required: true
+        price:
+          description: price of goods per piece (including VAT and all fees)
+          type: number
+          format: double
+          example: 10.99
+          required: true
+        related:
+          description:  related items to the product (This is a certain added value to the product that does not affect the price.)
+          type: array
+          required: false
           items:
             type: object
             properties:
-              id:
-                type: integer
-                example: ABC123
-              available:
-                type: boolean
-                example: true
-              count:
-                type: integer
-                example: 3
-              delivery:
-                type: integer
-                example: 0
-              name:
+              title:
+                description: Item description
                 type: string
-                example: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
-              price:
-                type: number
-                format: double
-                example: 10.99
-              related:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                      example: "Free gift bag"
-              priceTotal:
-                type: number
-                format: double
-                example: 10.99
+                example: "Free gift bag"
+        priceTotal:
+          description: total product price (quantity x price)
+          type: number
+          format: double
+          example: 10.99
+          required: true
+
+    ProductsAvailabilitySecondProduct:
+      type: object
+      properties:
+        id:
+          description: Product ID
+          type: integer
+          example: DFC123
+          required: true
+        count:
+          description: number of ordered pieces (always greater than 0)
+          type: integer
+          example: 2
+          required: true
+        available:
+          description: is the product available? ( false if the product cannot be ordered under any circumstances, otherwise true )
+          type: boolean
+          example: true
+          required: true
+        delivery:
+          description: number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. "on request", "within 2 days".
+          allOf:
+            - type: string
+            - type: integer
+          example: 1
+          required: true
+        name:
+          description: product name (max. 255 characters)
+          type: string
+          example: "Apple iPhone 10 45EA11111"
+          required: true
+        price:
+          description: price of goods per piece (including VAT and all fees)
+          type: number
+          format: double
+          example: 14.99
+          required: true
+        related:
+          description:  related items to the product (This is a certain added value to the product that does not affect the price.)
+          type: array
+          required: false
+          items:
+            type: object
+            properties:
+              title:
+                description: Item description
+                type: string
+                example: "Free gift bag yellow"
+        priceTotal:
+          description: total product price (quantity x price)
+          type: number
+          format: double
+          example: 14.99
+          required: true
 
   responses:
     ProductsAvailabilityResponse:
@@ -68,12 +194,4 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            allOf:
-              - $ref: '../../common/components.yml#/components/schemas/SuccessBaseResponse'
-              - type: object
-              - properties:
-                  data:
-                    allOf:
-                      - $ref: '#/components/schemas/ProductsAvailability'
-                type: object
+            $ref: '#/components/schemas/ProductsAvailabilityArray'
