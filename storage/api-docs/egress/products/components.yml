@@ -9,6 +9,7 @@ components:
       name: products[0][id]
       in: query
       required: true
+      description: Product ID - Unique marking of the product within the e-shop
       schema:
         $ref: '#/components/schemas/ProductId'
     productCount[0]:
@@ -22,6 +23,7 @@ components:
       name: products[1][id]
       in: query
       required: false
+      description: Product ID - Unique marking of the product within the e-shop
       schema:
         $ref: '#/components/schemas/ProductId'
     productCount[1]:
@@ -58,7 +60,7 @@ components:
               name: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
               price: 10.99
               related:
-                title: "Free gift bag"
+                [title: "Free gift bag", title: "Free delivery"]
               priceTotal: 10.99
             - id: DFC123
               count: 2
@@ -67,7 +69,7 @@ components:
               name: "Apple iPhone 10 45EA11111"
               price: 14.99
               related:
-                title: "Free gift bag yellow"
+                [title: "Free gift baseball cap"]
               priceTotal: 14.99
         priceSum:
           description: total price (for all products)
@@ -91,11 +93,19 @@ components:
           type: boolean
           example: true
         delivery:
-          description: number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. "on request", "within 2 days".
-          allOf:
+          description: |
+            Number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. 'on request', 'within 2 days'.<br>
+            0 - in stock, shipped within 24 hours<br>
+            1 - 1 day until the expedition<br>
+            2 - 2 days until dispatch<br>
+            3 - 3 days until dispatch<br>
+            n - n days to dispatch<br>
+            -1 - the goods are unavailable
+          oneOf:
             - type: string
+              example: "within 2 days"
             - type: integer
-          example: 0
+              example: 2
         name:
           description: product name (max. 255 characters)
           type: string
@@ -109,17 +119,20 @@ components:
           description:  related items to the product (This is a certain added value to the product that does not affect the price.)
           type: array
           items:
-            type: object
-            properties:
-              title:
-                description: Item description
-                type: string
-                example: "Free gift bag"
+            $ref: '#/components/schemas/RelatadItem'
         priceTotal:
           description: total product price (quantity x price)
           type: number
           format: double
           example: 10.99
+
+    RelatadItem:
+      type: object
+      properties:
+        title:
+          description: Item description
+          type: string
+          example: "Free gift bag"
 
     ProductsAvailabilitySecondProduct:
       type: object

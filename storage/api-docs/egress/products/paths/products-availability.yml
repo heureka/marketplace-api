@@ -1,6 +1,6 @@
-# http://www.example-partner-api/api/1/products/availability
+# https://www.example-partner-api.com/api/1/products/availability
 get:
-  summary: The method returns current data about the requested products. http://www.example-partner-api/api/1/products/availability
+  summary: The method returns current data about the requested products. http://www.example-partner-api.com/api/1/products/availability
   description: |
     The method returns current data about the requested products.
     ##  Frequently asked questions
