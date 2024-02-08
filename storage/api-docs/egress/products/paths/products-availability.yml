@@ -18,7 +18,7 @@ get:
     Not. value The count must be max. the number of pieces that the customer requires.
 
   tags:
-    - Egress - Products Availability
+    - CZ/SK - Egress - Products Availability
   parameters:
     - $ref: '../../../common/components.yml#/components/parameters/apiKeyHeaderParameter'
     - $ref: '../components.yml#/components/parameters/productId[0]'

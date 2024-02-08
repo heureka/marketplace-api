@@ -8,13 +8,13 @@ servers:
   - url: https://example-partner-api.com/
 
 paths:
-  # EGRESS
+  # CZ/SK EGRESS
   /api/1/products/availability:
     $ref: '../egress/products/paths/products-availability.yml'
     servers:
       - url: https://example-partner-api.com/
         description: for egress calls
 
-  # INGRESS
+  # CZ/SK/HU/RO INGRESS
   /api/cart/{apiKey}/1/payout-report:
     $ref: '../ingress/payment/paths/payout-report.yml'

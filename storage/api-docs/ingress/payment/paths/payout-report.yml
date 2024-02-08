@@ -10,7 +10,7 @@ post:
       amount, Payout amount.\n\n
       For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number"
   tags:
-    - Ingress - Payout Report
+    - CZ/SK/HU/RO - Ingress - Payout Report
   parameters:
     - $ref: '../../../common/components.yml#/components/parameters/apiKeyPathParameter'
   requestBody:
