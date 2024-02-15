@@ -16,7 +16,7 @@ paths:
       The file includes the following columns (in the partner's respective language):\n\n
       Order number, Order date, Payout type, Payout gross price,
       Delivery fee, Gross commission, Total
-      amount, Payout amount.\n\n
+      amount, Payout amount, Net commission.\n\n
       For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number"
       parameters:
         - $ref: '#/components/parameters/apiId'
