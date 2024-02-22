@@ -5,6 +5,8 @@ info:
   description: Public documentation of Heureka Marketplace API services.
 servers:
   - url: 'https://ssl.heureka.sk/'
+  - url: 'https://ssl.heureka.cz/'
+    description: Will be available after 5th of March
 paths:
   /api/cart/{apiId}/1/payout-report:
     post:
