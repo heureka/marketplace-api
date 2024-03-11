@@ -1,0 +1,92 @@
+openapi: 3.0.0
+
+info:
+paths:
+
+components:
+  parameters:
+    apiKeyHeaderParameter:
+      name: apiKey
+      in: header
+      required: true
+      description: API key from Partner Portal
+      schema:
+        type: string
+        example: e9a09238d23fb504c663d06553ca4838
+    apiKeyPathParameter:
+      name: apiKey
+      in: path
+      required: true
+      description: API key from Partner Portal
+      schema:
+        type: string
+        example: e9a09238d23fb504c663d06553ca4838
+
+  schemas:
+    BaseErrorResponse:
+      description: Error
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: Internal Server Error
+        errors:
+          type: array
+          items:
+            type: string
+          nullable: true
+          example: [ ]
+        version:
+          type: string
+          example: v2.0.0
+        data:
+          type: array
+          items:
+            type: string
+          nullable: true
+          example: [ ]
+    SuccessBaseResponse:
+      description: Success
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+          example: 200
+        message:
+          type: string
+          example: Success
+        uuid:
+          type: string
+          format: uuid
+          example: 031e1b75-0793-5dfa-9f3a-23a02bad3854
+        version:
+          type: string
+          example: v1.0.0
+
+  responses:
+    ErrorResponse:
+      description: 500 Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/BaseErrorResponse'
+              - type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: 500 Internal Server Error
+    SuccessResponse:
+      description: Default response with code 200.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessBaseResponse'

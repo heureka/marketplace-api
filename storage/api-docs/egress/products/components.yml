@@ -1,0 +1,147 @@
+openapi: 3.0.0
+
+info:
+paths:
+
+components:
+  parameters:
+    productId[0]:
+      name: products[0][id]
+      in: query
+      required: true
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[0]:
+      name: products[0][count]
+      in: query
+      required: true
+      description: Number of order units (always bigger than 0)
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+    productId[1]:
+      name: products[1][id]
+      in: query
+      required: false
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[1]:
+      name: products[1][count]
+      description: Number of order units (always bigger than 0)
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+
+  schemas:
+    ProductId:
+      type: string
+      description: Unique identifier of the product
+      example: 123
+    ProductCount:
+      type: integer
+      description: Number of ordered pieces (always greater than 0)
+      example: 10
+
+    ProductsAvailabilityResponseSchema:
+      type: object
+      required: [products, priceSum]
+      properties:
+        products:
+          description: field with products
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductsAvailability'
+          example:
+            - id: ABC123
+              count: 3
+              available: true
+              delivery: 0
+              name: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
+              price: 10.99
+              related:
+                [title: "Free gift bag", title: "Free delivery"]
+              priceTotal: 10.99
+            - id: DFC123
+              count: 2
+              available: true
+              delivery: 1
+              name: "Apple iPhone 10 45EA11111"
+              price: 14.99
+              related:
+                [title: "Free gift baseball cap"]
+              priceTotal: 14.99
+        priceSum:
+          description: Total price (for all products)
+          type: number
+          format: double
+          example: 25.98
+
+    ProductsAvailability:
+      type: object
+      required: [id, count, available, delivery, name, price, priceTotal]
+      description: array of products
+      properties:
+        id:
+          description: product ID <a href="https://sluzby.heureka.cz/napoveda/xml-feed/#ITEM_ID" target="_blank">(ITEM ID)</a>
+          type: integer
+          example: ABC123
+        count:
+          description: Number of order units  (always bigger than 0)
+          type: integer
+          example: 3
+        available:
+          description: Is the product available? (false if the product cannot be ordered under any circumstances, otherwise true)
+          type: boolean
+          example: true
+        delivery:
+          description: |
+            Number of days until dispatch (numerical value), if the store does not have a numerical value, it can specify a textual variant such as "on demand", or "within 2 days".<br>
+            0 - in stock, shipped within 24 hours<br>
+            1 - 1 day until the expedition<br>
+            2 - 2 days until dispatch<br>
+            3 - 3 days until dispatch<br>
+            n - n days to dispatch<br>
+            -1 - the goods are unavailable
+          oneOf:
+            - type: string
+              example: "within 2 days"
+            - type: integer
+              example: 2
+        name:
+          description: Product name (max. 255 characters)
+          type: string
+          example: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
+        price:
+          description: Price of the item per unit (including VAT and all fees)
+          type: number
+          format: double
+          example: 10.99
+        related:
+          description: Related items to the product (This adds some value to the product but does not affect the price.)
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedItem'
+        priceTotal:
+          description: Total price of the product (count × price)
+          type: number
+          format: double
+          example: 10.99
+
+    RelatedItem:
+      type: object
+      properties:
+        title:
+          description: Item description
+          type: string
+          example: "Free gift bag"
+
+  responses:
+    ProductsAvailabilityResponse:
+      description: Returns the products' availability
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ProductsAvailabilityResponseSchema'

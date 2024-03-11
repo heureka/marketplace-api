@@ -1,0 +1,31 @@
+# https://www.example-partner-api.com/api/1/products/availability
+get:
+  summary: |
+    The method returns current data about the requested products.
+    Example: https://www.example-partner-api.com/api/1/products/availability
+  description: |
+    The method returns current data about the requested products.
+    ##  Frequently asked questions
+    ### The store no longer sells the item. What should the response look like?
+    Set the value of 'available' to false.
+    ### The store sells the item, but does not know how long it will take to deliver. What should the response look like?
+    'available' must be set to true and 'delivery' value to -1 or another suitable textual description. Generally, what is in the XML feed must be purchasable on Heureka.
+    ### The customer requests 3 units of the item, but the store only has two. What should the response look like?
+    Set the value of 'count' to 2. The customer will be informed of this fact.
+    ### The customer requests 3 units, the store has 2 in stock, and 1 will arrive in 5 days. What should the 'delivery' value look like?
+    The 'delivery' value must be the worst-case scenario. Therefore, if the store is able to deliver all 3 units, the value will be 5.
+    ### The customer requests 1 unit of the item, but the store has 10 available. Should the store set 'count' to 10?
+    No. The value of 'count' must be the maximum number of units the customer requests.
+
+  tags:
+    - CZ/SK - Egress - Products Availability
+  parameters:
+    - $ref: '../../../common/components.yml#/components/parameters/apiKeyHeaderParameter'
+    - $ref: '../components.yml#/components/parameters/productId[0]'
+    - $ref: '../components.yml#/components/parameters/productCount[0]'
+    - $ref: '../components.yml#/components/parameters/productId[1]'
+    - $ref: '../components.yml#/components/parameters/productCount[1]'
+
+  responses:
+    200:
+      $ref: '../components.yml#/components/responses/ProductsAvailabilityResponse'

@@ -7,12 +7,10 @@
   },
   "servers": [
     {
-      "url": "https://ssl.heureka.sk/",
-      "description": "For SK partners"
+      "url": "https://ssl.heureka.sk/"
     },
     {
-      "url": "https://ssl.heureka.cz/",
-      "description": "For CZ partners"
+      "url": "https://example-partner-api.com/"
     }
   ],
   "paths": {
@@ -44,7 +42,7 @@
             "name": "products[0][id]",
             "in": "query",
             "required": true,
-            "description": "product ID",
+            "description": "Product ID - Unique marking of the product within the e-shop",
             "schema": {
               "type": "string",
               "description": "Unique identifier of the product",
@@ -55,7 +53,7 @@
             "name": "products[0][count]",
             "in": "query",
             "required": true,
-            "description": "Number of order units (always bigger than 0)",
+            "description": "Number of ordered pieces (always greater than 0)",
             "schema": {
               "type": "integer",
               "description": "Number of ordered pieces (always greater than 0)",
@@ -66,14 +64,14 @@
             "name": "products[1][id]",
             "in": "query",
             "required": false,
-            "description": "product ID",
+            "description": "Product ID - Unique marking of the product within the e-shop",
             "schema": {
               "$ref": "#/paths/~1api~11~1products~1availability/get/parameters/1/schema"
             }
           },
           {
             "name": "products[1][count]",
-            "description": "Number of order units (always bigger than 0)",
+            "description": "Number of ordered pieces (always greater than 0)",
             "in": "query",
             "required": false,
             "schema": {
@@ -112,7 +110,7 @@
                             "description": "array of products",
                             "properties": {
                               "id": {
-                                "description": "product ID <a href=\"https://sluzby.heureka.cz/napoveda/xml-feed/#ITEM_ID\" target=\"_blank\">(ITEM ID)</a>",
+                                "description": "product ID (ITEM ID)",
                                 "type": "integer",
                                 "example": "ABC123"
                               },
