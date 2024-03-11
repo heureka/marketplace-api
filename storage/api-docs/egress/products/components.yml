@@ -73,7 +73,7 @@ components:
                 [title: "Free gift baseball cap"]
               priceTotal: 14.99
         priceSum:
-          description: total price (for all products)
+          description: Total price (for all products)
           type: number
           format: double
           example: 25.98
@@ -81,22 +81,23 @@ components:
     ProductsAvailability:
       type: object
       required: [id, count, available, delivery, name, price, priceTotal]
+      description: array of products
       properties:
         id:
-          description: Product ID
+          description: product ID (ITEM ID)
           type: integer
           example: ABC123
         count:
-          description: number of ordered pieces (always greater than 0)
+          description: Number of order units  (always bigger than 0)
           type: integer
           example: 3
         available:
-          description: is the product available? ( false if the product cannot be ordered under any circumstances, otherwise true )
+          description: Is the product available? (false if the product cannot be ordered under any circumstances, otherwise true)
           type: boolean
           example: true
         delivery:
           description: |
-            Number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. 'on request', 'within 2 days'.<br>
+            Number of days until dispatch (numerical value), if the store does not have a numerical value, it can specify a textual variant such as "on demand", or "within 2 days".<br>
             0 - in stock, shipped within 24 hours<br>
             1 - 1 day until the expedition<br>
             2 - 2 days until dispatch<br>
@@ -109,26 +110,26 @@ components:
             - type: integer
               example: 2
         name:
-          description: product name (max. 255 characters)
+          description: Product name (max. 255 characters)
           type: string
           example: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
         price:
-          description: price of goods per piece (including VAT and all fees)
+          description: Price of the item per unit (including VAT and all fees)
           type: number
           format: double
           example: 10.99
         related:
-          description:  related items to the product (This is a certain added value to the product that does not affect the price.)
+          description: Related items to the product (This adds some value to the product but does not affect the price.)
           type: array
           items:
-            $ref: '#/components/schemas/RelatadItem'
+            $ref: '#/components/schemas/RelatedItem'
         priceTotal:
-          description: total product price (quantity x price)
+          description: Total price of the product (count × price)
           type: number
           format: double
           example: 10.99
 
-    RelatadItem:
+    RelatedItem:
       type: object
       properties:
         title:
