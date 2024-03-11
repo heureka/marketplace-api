@@ -23,7 +23,7 @@ post:
             day:
               type: string
               format: date
-              example: 2023-09-20
+              example: "2023-09-20"
               description: Date of payout
   responses:
     200:
