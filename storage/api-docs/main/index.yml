@@ -5,7 +5,9 @@ info:
   description: Public documentation of Heureka Marketplace API services.
 servers:
   - url: https://ssl.heureka.sk/
-  - url: https://example-partner-api.com/
+    description: For SK partners
+  - url: https://ssl.heureka.cz/
+    description: For CZ partners
 
 paths:
   # CZ/SK EGRESS

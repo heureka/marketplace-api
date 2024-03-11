@@ -7,10 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://ssl.heureka.sk/"
+      "url": "https://ssl.heureka.sk/",
+      "description": "For SK partners"
     },
     {
-      "url": "https://example-partner-api.com/"
+      "url": "https://ssl.heureka.cz/",
+      "description": "For CZ partners"
     }
   ],
   "paths": {
