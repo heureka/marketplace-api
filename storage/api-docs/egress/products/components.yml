@@ -9,26 +9,26 @@ components:
       name: products[0][id]
       in: query
       required: true
-      description: Product ID - Unique marking of the product within the e-shop
+      description: product ID
       schema:
         $ref: '#/components/schemas/ProductId'
     productCount[0]:
       name: products[0][count]
       in: query
       required: true
-      description: Number of ordered pieces (always greater than 0)
+      description: Number of order units (always bigger than 0)
       schema:
         $ref: '#/components/schemas/ProductCount'
     productId[1]:
       name: products[1][id]
       in: query
       required: false
-      description: Product ID - Unique marking of the product within the e-shop
+      description: product ID
       schema:
         $ref: '#/components/schemas/ProductId'
     productCount[1]:
       name: products[1][count]
-      description: Number of ordered pieces (always greater than 0)
+      description: Number of order units (always bigger than 0)
       in: query
       required: false
       schema:
@@ -84,7 +84,7 @@ components:
       description: array of products
       properties:
         id:
-          description: product ID (ITEM ID)
+          description: product ID <a href="https://sluzby.heureka.cz/napoveda/xml-feed/#ITEM_ID" target="_blank">(ITEM ID)</a>
           type: integer
           example: ABC123
         count:

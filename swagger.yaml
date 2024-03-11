@@ -23,7 +23,7 @@
       ],
       "get": {
         "summary": "The method returns current data about the requested products.\nExample: https://www.example-partner-api.com/api/1/products/availability\n",
-        "description": "The method returns current data about the requested products.\n##  Frequently asked questions\n### The store no longer sells the product. What should the answer look like?\nReturn available to false.\n### The store sells the goods, but does not know how long it will be able to deliver the goods. What should the answer look like?\nAvailable another must be true and delivery or must be -1 appropriate text description. In general, what is in the XML feed must be available for purchase on Heureka as well.\n### A customer requests 3 of an item, but the store only has two. What should the answer look like?\nin count Enter a value of 2 . The customer will be notified of this fact.\n### The customer requests 3 pieces, the store has 2 in stock and 1 will arrive in 5 days. What should the delivery value look like?\nvalue The delivery must be the worst possible, so if the store is able to deliver all 3 pieces, it will value 5 .\n### The customer requests 1 piece of the item, but the store has 10 available. So the store will list 10 in the count?\nNot. value The count must be max. the number of pieces that the customer requires.\n",
+        "description": "The method returns current data about the requested products.\n##  Frequently asked questions\n### The store no longer sells the item. What should the response look like?\nSet the value of 'available' to false.\n### The store sells the item, but does not know how long it will take to deliver. What should the response look like?\n'available' must be set to true and 'delivery' value to -1 or another suitable textual description. Generally, what is in the XML feed must be purchasable on Heureka.\n### The customer requests 3 units of the item, but the store only has two. What should the response look like?\nSet the value of 'count' to 2. The customer will be informed of this fact.\n### The customer requests 3 units, the store has 2 in stock, and 1 will arrive in 5 days. What should the 'delivery' value look like?\nThe 'delivery' value must be the worst-case scenario. Therefore, if the store is able to deliver all 3 units, the value will be 5.\n### The customer requests 1 unit of the item, but the store has 10 available. Should the store set 'count' to 10?\nNo. The value of 'count' must be the maximum number of units the customer requests.\n",
         "tags": [
           "CZ/SK - Egress - Products Availability"
         ],
@@ -42,7 +42,7 @@
             "name": "products[0][id]",
             "in": "query",
             "required": true,
-            "description": "Product ID - Unique marking of the product within the e-shop",
+            "description": "product ID",
             "schema": {
               "type": "string",
               "description": "Unique identifier of the product",
@@ -53,7 +53,7 @@
             "name": "products[0][count]",
             "in": "query",
             "required": true,
-            "description": "Number of ordered pieces (always greater than 0)",
+            "description": "Number of order units (always bigger than 0)",
             "schema": {
               "type": "integer",
               "description": "Number of ordered pieces (always greater than 0)",
@@ -64,14 +64,14 @@
             "name": "products[1][id]",
             "in": "query",
             "required": false,
-            "description": "Product ID - Unique marking of the product within the e-shop",
+            "description": "product ID",
             "schema": {
               "$ref": "#/paths/~1api~11~1products~1availability/get/parameters/1/schema"
             }
           },
           {
             "name": "products[1][count]",
-            "description": "Number of ordered pieces (always greater than 0)",
+            "description": "Number of order units (always bigger than 0)",
             "in": "query",
             "required": false,
             "schema": {
@@ -107,24 +107,25 @@
                               "price",
                               "priceTotal"
                             ],
+                            "description": "array of products",
                             "properties": {
                               "id": {
-                                "description": "Product ID",
+                                "description": "product ID <a href=\"https://sluzby.heureka.cz/napoveda/xml-feed/#ITEM_ID\" target=\"_blank\">(ITEM ID)</a>",
                                 "type": "integer",
                                 "example": "ABC123"
                               },
                               "count": {
-                                "description": "number of ordered pieces (always greater than 0)",
+                                "description": "Number of order units  (always bigger than 0)",
                                 "type": "integer",
                                 "example": 3
                               },
                               "available": {
-                                "description": "is the product available? ( false if the product cannot be ordered under any circumstances, otherwise true )",
+                                "description": "Is the product available? (false if the product cannot be ordered under any circumstances, otherwise true)",
                                 "type": "boolean",
                                 "example": true
                               },
                               "delivery": {
-                                "description": "Number of days until dispatch ( dial ), if the store does not have a numerical value, it can indicate a text variant, e.g. 'on request', 'within 2 days'.<br>\n0 - in stock, shipped within 24 hours<br>\n1 - 1 day until the expedition<br>\n2 - 2 days until dispatch<br>\n3 - 3 days until dispatch<br>\nn - n days to dispatch<br>\n-1 - the goods are unavailable\n",
+                                "description": "Number of days until dispatch (numerical value), if the store does not have a numerical value, it can specify a textual variant such as \"on demand\", or \"within 2 days\".<br>\n0 - in stock, shipped within 24 hours<br>\n1 - 1 day until the expedition<br>\n2 - 2 days until dispatch<br>\n3 - 3 days until dispatch<br>\nn - n days to dispatch<br>\n-1 - the goods are unavailable\n",
                                 "oneOf": [
                                   {
                                     "type": "string",
@@ -137,18 +138,18 @@
                                 ]
                               },
                               "name": {
-                                "description": "product name (max. 255 characters)",
+                                "description": "Product name (max. 255 characters)",
                                 "type": "string",
                                 "example": "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
                               },
                               "price": {
-                                "description": "price of goods per piece (including VAT and all fees)",
+                                "description": "Price of the item per unit (including VAT and all fees)",
                                 "type": "number",
                                 "format": "double",
                                 "example": 10.99
                               },
                               "related": {
-                                "description": "related items to the product (This is a certain added value to the product that does not affect the price.)",
+                                "description": "Related items to the product (This adds some value to the product but does not affect the price.)",
                                 "type": "array",
                                 "items": {
                                   "type": "object",
@@ -162,7 +163,7 @@
                                 }
                               },
                               "priceTotal": {
-                                "description": "total product price (quantity x price)",
+                                "description": "Total price of the product (count × price)",
                                 "type": "number",
                                 "format": "double",
                                 "example": 10.99
@@ -204,7 +205,7 @@
                           ]
                         },
                         "priceSum": {
-                          "description": "total price (for all products)",
+                          "description": "Total price (for all products)",
                           "type": "number",
                           "format": "double",
                           "example": 25.98
