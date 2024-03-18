@@ -1,0 +1,201 @@
+openapi: 3.0.0
+
+info:
+paths:
+
+components:
+  parameters:
+    productId[0]:
+      name: products[0][id]
+      in: query
+      required: true
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[0]:
+      name: products[0][count]
+      in: query
+      required: true
+      description: Number of order units (always bigger than 0)
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+    productId[1]:
+      name: products[1][id]
+      in: query
+      required: false
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[1]:
+      name: products[1][count]
+      description: Number of order units (always bigger than 0)
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+
+  schemas:
+    ProductId:
+      type: string
+      description: Unique identifier of the product
+      example: 123
+    ProductCount:
+      type: integer
+      description: Number of ordered pieces (always greater than 0)
+      example: 10
+
+    PaymentDeliveryResponseSchema:
+      type: object
+      required: [transport, payment, binding]
+      description: array of transport, payment, binding
+      properties:
+        transport:
+          type: array
+          items:
+            $ref: '#/components/schemas/transport'
+        payment:
+          type: array
+          items:
+            $ref: '#/components/schemas/payment'
+        binding:
+          type: array
+          items:
+            $ref: '#/components/schemas/binding'
+      example:
+        transport :
+          - id: 1
+            type: 1
+            name: "PPL"
+            price: 4
+            description: "Within 1 - 2 working days."
+          - id: 2
+            type: 1
+            name: "Slovenská pošta"
+            price: 3.5
+            description: "Within 2-3 working days."
+          - id: 4
+            type: 2
+            name: "Personal subscription Lozorno"
+            price: 0
+            description: "We will tell you that the goods are ready for collection..."
+            store:
+              id: 2020
+              type: 1
+        payment:
+          - id: 123
+            type: 1
+            price: 1
+            name: "Dobierka Slovenská pošta"
+          - id: 200
+            type: 1
+            price: 1.1
+            name: "Dobierka PPL"
+          - id: 300
+            type: 3
+            price: 0.00
+            name: "Platba kartou"
+          - id: 100
+            type: 2
+            price: 0.33
+            name: "Payment on collection"
+        binding:
+          - id: 1
+            transportId: 1
+            paymentId: 200
+          - id: 5
+            transportId: 1
+            paymentId: 300
+          - id: 2
+            transportId: 2
+            paymentId: 123
+          - id: 6
+            transportId: 2
+            paymentId: 300
+          - id: 4
+            transportId: 4
+            paymentId: 300
+          - id: 7
+            transportId: 4
+            paymentId: 100
+
+    transport:
+      type: object
+      description: transport
+      required: [id, type, name, price, description]
+      properties:
+        id:
+          description: Transport ID
+          type: integer
+          example: 1
+        type:
+          description: type of transport <a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-delivery-type" target="_blank">(code number)</a>
+          type: integer
+          example: 1
+        name:
+          description: transport name
+          type: string
+          example: "PPL"
+        price:
+          description: price
+          type: number
+          format: double
+        description:
+          description: description
+          type: string
+          example: "Within 1 - 2 working days."
+        store:
+          description: Branch identification
+          type: object
+          properties:
+            type:
+              type: integer
+              description: type of branch / point of sale ( number list )
+            id:
+              type: integer
+              description: Branch ID for Personal collection (from feed or administration) or shop ID ("shopId") / carrier ID ("shipperId") for DepotAPI .
+    payment:
+      description: payment
+      type: object
+      properties:
+        id:
+          description: Payment ID
+          type: integer
+          example: 100
+        type:
+          description: type of payment <a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type" target="_blank">( dial )</a>
+          type: integer
+          example: 2
+        price:
+          description: price
+          type: number
+          format: double
+          example: 0.33
+        name:
+          description: payment name
+          type: string
+          example: "Payment on collection"
+    binding:
+      description: field of links between transport and payment
+      type: object
+      properties:
+        id:
+          description: Binding ID
+          type: integer
+          example: 1
+        transportId:
+          description: Transport ID
+          type: integer
+          example: 1
+        paymentId:
+          description: Payment Id
+          type: integer
+          example: 200
+
+  responses:
+    PaymentDeliveryResponse:
+      description: Returns shipping and payment options.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PaymentDeliveryResponseSchema'

@@ -1,0 +1,29 @@
+# https://www.example-partner-api.com/api/1/payment/delivery
+get:
+  summary: |
+    Returns shipping and payment options. Example: https://www.example-partner-api.com/api/1/payment/delivery
+  description: |
+    Each involved store will send via API how it ships the goods to the customer. The customer chooses one of these methods. If the customer chooses payment in advance (payment by card), so payment is ensured by Heureka using the Adyen service. And it doesn't matter if the store supports such payment or not.
+    The situation is different with cash on delivery, where the payment is on the side of the store. Here, Heureka fully respects the possibilities of the store and displays them to the customer. This means that unless the store supports cash on delivery, it will not be offered to the customer.
+    ##  Frequently asked questions
+    ### What are ties for?
+    Links are important so that we can correctly show the customer the available transport for the selected payment.
+    ### Does the store have to send card payments and shipping links when they are in your control?
+    Card payment (and other online payments) is provided by Heureka using PayU, so it might seem that that no information is required from you about card payment. To some extent, this is not the case. If you don't send them, nothing happens, we will generate the relevant links ourselves. But if you send them, we will send you a specific payment and shipping ID when ordering, which the shopper has chosen. So the store can correctly match them in its shop system.
+    ### The store has two of the items in stock and can ship them immediately, but the customer wants three, but the third one won't have a store until five days from now. What should the value look like in delivery?
+    The delivery value must be the value for which the store is able to deliver a complete order. In this case, five.
+    ###How to send Slovak post with or without cash on delivery?
+    It is necessary to distinguish two things here. Slovak Post is a shipping option and cash on delivery is a payment, these two things must be connected using ties. It would be a mistake if the possibility of payment by cash on delivery or in advance was differentiated into transport.
+
+  tags:
+    - CZ/SK - Egress - Payment Delivery
+  parameters:
+    - $ref: '../../../common/components.yml#/components/parameters/apiKeyHeaderParameter'
+    - $ref: '../components.yml#/components/parameters/productId[0]'
+    - $ref: '../components.yml#/components/parameters/productCount[0]'
+    - $ref: '../components.yml#/components/parameters/productId[1]'
+    - $ref: '../components.yml#/components/parameters/productCount[1]'
+
+  responses:
+    200:
+      $ref: '../components.yml#/components/responses/PaymentDeliveryResponse'

@@ -16,6 +16,11 @@ paths:
     servers:
       - url: https://example-partner-api.com/
         description: for egress calls
+  /api/1/payment/delivery:
+    $ref: '../egress/payment/paths/payment-delivery.yml'
+    servers:
+      - url: https://example-partner-api.com/
+        description: for egress calls
 
   # CZ/SK/HU/RO INGRESS
   /api/cart/{apiKey}/1/payout-report:
