@@ -3,12 +3,14 @@ post:
   summary: Get a day's payout report in CSV format
   description:
     "Get all payout data for a day in CSV format.\n\n
+    The payout can be queried by using one of the following filters:\n\n
+    <ul><li>By day, using the 'day' parameter.</li><li>By payout's reference number, using 'referenceNumber' parameter.</li></ul>\n\n
     In the CSV data are separated by a semicolon (;).\n\n
     The file includes the following columns (in the partner's respective language):\n\n
     Order number, Order date, Payout type, Payout gross price,
     Delivery fee, Gross commission, Total
     amount, Payout amount, Net commission.\n\n
-    For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number"
+    For CZ/SK partners there are three additional columns: Variable symbol, Internal id, Reference number."
   tags:
     - CZ/SK/HU/RO - Ingress - Payout Report
   parameters:
@@ -18,13 +20,26 @@ post:
       application/json:
         schema:
           type: object
-          required: [ day ]
+          minProperties: 1
           properties:
             day:
               type: string
               format: date
               example: "2023-09-20"
               description: Date of payout
+            referenceNumber:
+              type: string
+              example: "12345678123"
+              description: Reference number of payout
+        examples:
+          usingDay:
+            summary: Using day filter
+            value:
+              day: "2023-09-20"
+          usingReferenceNumber:
+            summary: Using reference number filter
+            value:
+              referenceNumber: "12345678123"
   responses:
     200:
       $ref: '../components.yml#/components/responses/SuccessResponse'
