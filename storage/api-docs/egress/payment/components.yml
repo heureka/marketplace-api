@@ -16,7 +16,7 @@ components:
       name: products[0][count]
       in: query
       required: true
-      description: Number of order units (always bigger than 0)
+      description: Number of requested pieces
       schema:
         $ref: '#/components/schemas/ProductCount'
     productId[1]:
@@ -28,7 +28,7 @@ components:
         $ref: '#/components/schemas/ProductId'
     productCount[1]:
       name: products[1][count]
-      description: Number of order units (always bigger than 0)
+      description: Number of requested pieces
       in: query
       required: false
       schema:
@@ -120,74 +120,74 @@ components:
 
     transport:
       type: object
-      description: transport
+      description: transport array
       required: [id, type, name, price, description]
       properties:
         id:
-          description: Transport ID
+          description: Delivery ID (chosen by the partner)
           type: integer
           example: 1
         type:
-          description: type of transport <a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-delivery-type" target="_blank">(code number)</a>
+          description: Delivery type (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-delivery-type" target="_blank">list of supported delivery types</a> CZ / SK)
           type: integer
           example: 1
         name:
-          description: transport name
+          description: Delivery name
           type: string
           example: "PPL"
         price:
-          description: price
+          description: Delivery price
           type: number
           format: double
         description:
-          description: description
+          description: Delivery description
           type: string
           example: "Within 1 - 2 working days."
         store:
-          description: Branch identification
+          description: Branch/pickup point identification
           type: object
           properties:
             type:
               type: integer
-              description: type of branch / point of sale ( number list )
+              description: type of pickup option (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-store" target="_blank">list of supported types</a>)
             id:
               type: integer
-              description: Branch ID for Personal collection (from feed or administration) or shop ID ("shopId") / carrier ID ("shipperId") for DepotAPI .
+              description: ID of the store’s own branch or ID of the external pickup point provider ("shipperId" - <a href="https://api.heureka.cz/depot-api/v1/delivery-places/getshippers" target="_blank">list for CZ Heureka?</a< or <a href="https://api.heureka.sk/depot-api/v1/delivery-places/getshippers" target="_blank">list for SK Heureka</a>)
     payment:
-      description: payment
+      description: payment array
       type: object
       properties:
         id:
-          description: Payment ID
+          description: Payment ID (chosen by the partner)
           type: integer
           example: 100
         type:
-          description: type of payment <a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type" target="_blank">( dial )</a>
+          description: Payment type (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type" target="_blank">list of supported delivery types</a> CZ / SK)
           type: integer
           example: 2
+        name:
+          description: Payment name
+          type: string
+          example: "Payment on collection"
         price:
-          description: price
+          description: Payment price
           type: number
           format: double
           example: 0.33
-        name:
-          description: payment name
-          type: string
-          example: "Payment on collection"
     binding:
       description: field of links between transport and payment
       type: object
       properties:
         id:
-          description: Binding ID
+          description: Binding ID (chosen by the partner)
           type: integer
           example: 1
         transportId:
-          description: Transport ID
+          description: Delivery ID form transport array above
           type: integer
           example: 1
         paymentId:
-          description: Payment Id
+          description: Payment ID from payment array above
           type: integer
           example: 200
 
