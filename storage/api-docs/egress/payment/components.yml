@@ -122,6 +122,7 @@ components:
       type: object
       description: transport array
       required: [id, type, name, price, description]
+      minProperties: 1
       properties:
         id:
           description: Delivery ID (chosen by the partner)
@@ -156,40 +157,49 @@ components:
     payment:
       description: payment array
       type: object
+      minProperties: 0
       properties:
         id:
           description: Payment ID (chosen by the partner)
           type: integer
           example: 100
+          required: true
         type:
           description: Payment type (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type" target="_blank">list of supported delivery types</a> CZ / SK)
           type: integer
           example: 2
+          required: true
         name:
           description: Payment name
           type: string
           example: "Payment on collection"
+          required: true
         price:
           description: Payment price
           type: number
           format: double
           example: 0.33
+          required: true
     binding:
       description: field of links between transport and payment
       type: object
+      minProperties: 0
       properties:
         id:
           description: Binding ID (chosen by the partner)
           type: integer
           example: 1
+          required: true
         transportId:
           description: Delivery ID form transport array above
           type: integer
           example: 1
+          required: true
         paymentId:
           description: Payment ID from payment array above
           type: integer
           example: 200
+          required: true
 
   responses:
     PaymentDeliveryResponse:

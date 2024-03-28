@@ -3,24 +3,28 @@ get:
   summary: |
     Returns the shipping and payment options available for the given item(s). Example: https://www.example-partner-api.com/api/1/payment/delivery
   description: |
-    Each involved store will send via API how they ship the goods to the customer. The customer chooses one of these methods. If the customer chooses payment in advance (payment by card), Heureka provides the payment using the Adyen service. And it doesn't matter if the store supports such payment or not.<br>
-    The situation is different with cash on delivery and bank transfer, where the payment is on the side of the store. Here, Heureka fully respects the possibilities of the store and displays them to the customer. This means that unless the store supports cash on delivery or bank transfer, it will not be offered to the customer<br>
+    Each involved store will send via API how they ship the goods to the customer. The customer chooses one of these methods. If the customer chooses payment in advance (payment by card), Heureka provides the payment using the Adyen service. And it doesn't matter if the store supports such payment or not.<br><br>
+    The situation is different with cash on delivery and bank transfer, where the payment is on the side of the store. Here, Heureka fully respects the possibilities of the store and displays them to the customer. This means that unless the store supports cash on delivery or bank transfer, it will not be offered to the customer<br><br>
     In the <b>binding</b> parameter, the store determines how the given payment is bound to the delivery method. For example, "payment in cash upon collection" is tied to the method of delivery "personal collection at the branch in Bratislava".
     ### The store does not support payment by card
-    If the customer chooses to pay by card and the store does not support this option, then all transport methods are displayed to the customer regardless of the bindings specified in the <b>binding</b>.<br>
+    If the customer chooses to pay by card and the store does not support this option, then all transport methods are displayed to the customer regardless of the bindings specified in the <b>binding</b>.<br><br>
     It is assumed that the store is able to deliver the goods to the customer with all the delivery options offered after payment for the goods.
     ### Identification of branches
     Parameter store serves to clearly identify the branch where the order can be picked up. It is only relevant for the following two types (do not send them, for the other delivery options):<br>
+    <br>
     &bull; the store's own branches (transport type: 1, store type: 1) and<br>
     &bull; external pickup points (transport type: 9, store type: 3).<br>
+    <br>
     <b>The store’s own branches</b> must have the correct id, which is also used within the XML Availability feed (if used by a partner) - 
     <a href="https://sluzby.heureka.cz/napoveda/dostupnostni-feed/" target="_blank">CZ help center link</a> or 
     <a href="https://sluzby.heureka.sk/napoveda/dostupnostni-feed/" target="_blank">SK help center link</a>. You can find it in the Heureka administration under 
     <a href="https://sluzby.heureka.cz/obchody/pobocky/" target="_blank">CZ Heureka Branches Settings</a> or 
     <a href="https://sluzby.heureka.sk/obchody/pobocky/" target="_blank">SK Heureka Branches Settings</a> (called “Depot ID pro dostupnostní XML soubor”). You can also use an API call GET stores.<br>
+    <br>
     <b>External pickup points</b> are provided by Heureka. You just need to provide the id of the supported provider. You can find the list of ids (called “shipperId”) on the link of 
     <a href="https://api.heureka.cz/depot-api/v1/delivery-places/getshippers" target="_blank">Supported shippers for CZ Heureka</a> or 
     <a href="https://api.heureka.sk/depot-api/v1/delivery-places/getshippers" target="_blank">Supported shippers for SK Heureka</a>.
+    <br><br>
     ##  Frequently asked questions
     ### What are bindings for?
     Bindings are important so that we can correctly show the customer the available payment and its price for the selected transport.
