@@ -51,14 +51,17 @@ components:
       properties:
         transport:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/transport'
         payment:
           type: array
+          minItems: 0
           items:
             $ref: '#/components/schemas/payment'
         binding:
           type: array
+          minItems: 0
           items:
             $ref: '#/components/schemas/binding'
       example:
@@ -122,7 +125,6 @@ components:
       type: object
       description: transport array
       required: [id, type, name, price, description]
-      minItems: 1
       properties:
         id:
           description: Delivery ID (chosen by the partner)
@@ -157,7 +159,6 @@ components:
     payment:
       description: payment array
       type: object
-      minItems: 0
       required: [id, type, name, price]
       properties:
         id:
@@ -180,7 +181,6 @@ components:
     binding:
       description: field of links between transport and payment
       type: object
-      minItems: 0
       required: [id, transportId, paymentId]
       properties:
         id:
