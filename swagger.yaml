@@ -31,14 +31,7 @@
         ],
         "parameters": [
           {
-            "name": "apiKey",
-            "in": "header",
-            "required": true,
-            "description": "API key from Partner Portal",
-            "schema": {
-              "type": "string",
-              "example": "e9a09238d23fb504c663d06553ca4838"
-            }
+            "$ref": "#/paths/~1api~11~1payment~1delivery/get/parameters/0"
           },
           {
             "name": "products[0][id]",
@@ -212,6 +205,307 @@
                           "format": "double",
                           "example": 25.98
                         }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1/payment/delivery": {
+      "servers": [
+        {
+          "url": "https://example-partner-api.com/",
+          "description": "for egress calls"
+        }
+      ],
+      "get": {
+        "summary": "Returns the shipping and payment options available for the given item(s). Example: https://www.example-partner-api.com/api/1/payment/delivery\n",
+        "description": "Each involved store will send via API how they ship the goods to the customer. The customer chooses one of these methods. If the customer chooses payment in advance (payment by card), Heureka provides the payment using the Adyen service. And it doesn't matter if the store supports such payment or not.<br><br>\nThe situation is different with cash on delivery and bank transfer, where the payment is on the side of the store. Here, Heureka fully respects the possibilities of the store and displays them to the customer. This means that unless the store supports cash on delivery or bank transfer, it will not be offered to the customer<br><br>\nIn the <b>binding</b> parameter, the store determines how the given payment is bound to the delivery method. For example, \"payment in cash upon collection\" is tied to the method of delivery \"personal collection at the branch in Bratislava\".\n### The store does not support payment by card\nIf the customer chooses to pay by card and the store does not support this option, then all transport methods are displayed to the customer regardless of the bindings specified in the <b>binding</b>.<br><br>\nIt is assumed that the store is able to deliver the goods to the customer with all the delivery options offered after payment for the goods.\n### Identification of branches\nParameter store serves to clearly identify the branch where the order can be picked up. It is only relevant for the following two types (do not send them, for the other delivery options):<br>\n<br>\n&bull; the store's own branches (transport type: 1, store type: 1) and<br>\n&bull; external pickup points (transport type: 9, store type: 3).<br>\n<br>\n<b>The store’s own branches</b> must have the correct id, which is also used within the XML Availability feed (if used by a partner) - \n<a href=\"https://sluzby.heureka.cz/napoveda/dostupnostni-feed/\" target=\"_blank\">CZ help center link</a> or \n<a href=\"https://sluzby.heureka.sk/napoveda/dostupnostni-feed/\" target=\"_blank\">SK help center link</a>. You can find it in the Heureka administration under \n<a href=\"https://sluzby.heureka.cz/obchody/pobocky/\" target=\"_blank\">CZ Heureka Branches Settings</a> or \n<a href=\"https://sluzby.heureka.sk/obchody/pobocky/\" target=\"_blank\">SK Heureka Branches Settings</a> (called “Depot ID pro dostupnostní XML soubor”). You can also use an API call GET stores.<br>\n<br>\n<b>External pickup points</b> are provided by Heureka. You just need to provide the id of the supported provider. You can find the list of ids (called “shipperId”) on the link of \n<a href=\"https://api.heureka.cz/depot-api/v1/delivery-places/getshippers\" target=\"_blank\">Supported shippers for CZ Heureka</a> or \n<a href=\"https://api.heureka.sk/depot-api/v1/delivery-places/getshippers\" target=\"_blank\">Supported shippers for SK Heureka</a>.\n<br><br>\n##  Frequently asked questions\n### What are bindings for?\nBindings are important so that we can correctly show the customer the available payment and its price for the selected transport.\n### Does the store have to send card payments and shipping links when they are in Heureka’s control?\nCard payment (and other online payments) is provided by Heureka using Adyen, so it might seem that no information from you is required about it. To some extent, this is not the case. If you don't send them, nothing happens, we will generate the relevant links ourselves. But if you send them, we will send you the specific payment and shipping ID that the customer chose when ordering. So the store can correctly match them in its shop system.\n### The store has two of the items in stock and can ship them immediately, but the customer wants three, but the store will have the third in five days. What should the value look like in delivery?\nThe delivery value must be the value for which the store is able to deliver a complete order. In this case, five.\n### How to send GLS home delivery with or without cash on delivery?\nIt is necessary to distinguish two things. GLS is a transport option and Cash on delivery is a payment. These two things must be connected using binding. It would not be correct if the possibility of payment by cash on delivery or in advance was differentiated into multiple options of a transport.\n",
+        "tags": [
+          "CZ/SK - Egress - Payment Delivery"
+        ],
+        "parameters": [
+          {
+            "name": "apiKey",
+            "in": "header",
+            "required": true,
+            "description": "API key from Partner Portal",
+            "schema": {
+              "type": "string",
+              "example": "e9a09238d23fb504c663d06553ca4838"
+            }
+          },
+          {
+            "name": "products[0][id]",
+            "in": "query",
+            "required": true,
+            "description": "product ID",
+            "schema": {
+              "$ref": "#/paths/~1api~11~1payment~1delivery/get/parameters/3/schema"
+            }
+          },
+          {
+            "name": "products[0][count]",
+            "in": "query",
+            "required": true,
+            "description": "Number of requested pieces",
+            "schema": {
+              "type": "integer",
+              "description": "Number of ordered pieces (always greater than 0)",
+              "example": 10
+            }
+          },
+          {
+            "name": "products[1][id]",
+            "in": "query",
+            "required": false,
+            "description": "product ID",
+            "schema": {
+              "type": "string",
+              "description": "Unique identifier of the product",
+              "example": 123
+            }
+          },
+          {
+            "name": "products[1][count]",
+            "description": "Number of requested pieces",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/paths/~1api~11~1payment~1delivery/get/parameters/2/schema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns shipping and payment options.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "transport",
+                        "payment",
+                        "binding"
+                      ],
+                      "description": "array of transport, payment, binding",
+                      "properties": {
+                        "transport": {
+                          "type": "array",
+                          "minItems": 1,
+                          "items": {
+                            "type": "object",
+                            "description": "transport array",
+                            "required": [
+                              "id",
+                              "type",
+                              "name",
+                              "price",
+                              "description"
+                            ],
+                            "properties": {
+                              "id": {
+                                "description": "Delivery ID (chosen by the partner)",
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "type": {
+                                "description": "Delivery type (<a href=\"https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-delivery-type\" target=\"_blank\">list of supported delivery types</a> CZ / SK)",
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "name": {
+                                "description": "Delivery name",
+                                "type": "string",
+                                "example": "PPL"
+                              },
+                              "price": {
+                                "description": "Delivery price",
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "description": {
+                                "description": "Delivery description",
+                                "type": "string",
+                                "example": "Within 1 - 2 working days."
+                              },
+                              "store": {
+                                "description": "Branch/pickup point identification",
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "integer",
+                                    "description": "type of pickup option (<a href=\"https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-store\" target=\"_blank\">list of supported types</a>)"
+                                  },
+                                  "id": {
+                                    "type": "integer",
+                                    "description": "ID of the store’s own branch or ID of the external pickup point provider (\"shipperId\" - <a href=\"https://api.heureka.cz/depot-api/v1/delivery-places/getshippers\" target=\"_blank\">list for CZ Heureka?</a< or <a href=\"https://api.heureka.sk/depot-api/v1/delivery-places/getshippers\" target=\"_blank\">list for SK Heureka</a>)"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "payment": {
+                          "type": "array",
+                          "minItems": 0,
+                          "items": {
+                            "description": "payment array",
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "type",
+                              "name",
+                              "price"
+                            ],
+                            "properties": {
+                              "id": {
+                                "description": "Payment ID (chosen by the partner)",
+                                "type": "integer",
+                                "example": 100
+                              },
+                              "type": {
+                                "description": "Payment type (<a href=\"https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type\" target=\"_blank\">list of supported delivery types</a> CZ / SK)",
+                                "type": "integer",
+                                "example": 2
+                              },
+                              "name": {
+                                "description": "Payment name",
+                                "type": "string",
+                                "example": "Payment on collection"
+                              },
+                              "price": {
+                                "description": "Payment price",
+                                "type": "number",
+                                "format": "double",
+                                "example": 0.33
+                              }
+                            }
+                          }
+                        },
+                        "binding": {
+                          "type": "array",
+                          "minItems": 0,
+                          "items": {
+                            "description": "field of links between transport and payment",
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "transportId",
+                              "paymentId"
+                            ],
+                            "properties": {
+                              "id": {
+                                "description": "Binding ID (chosen by the partner)",
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "transportId": {
+                                "description": "Delivery ID form transport array above",
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "paymentId": {
+                                "description": "Payment ID from payment array above",
+                                "type": "integer",
+                                "example": 200
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "example": {
+                        "transport": [
+                          {
+                            "id": 1,
+                            "type": 1,
+                            "name": "PPL",
+                            "price": 4,
+                            "description": "Within 1 - 2 working days."
+                          },
+                          {
+                            "id": 2,
+                            "type": 1,
+                            "name": "Slovenská pošta",
+                            "price": 3.5,
+                            "description": "Within 2-3 working days."
+                          },
+                          {
+                            "id": 4,
+                            "type": 2,
+                            "name": "Personal subscription Lozorno",
+                            "price": 0,
+                            "description": "We will tell you that the goods are ready for collection...",
+                            "store": {
+                              "id": 2020,
+                              "type": 1
+                            }
+                          }
+                        ],
+                        "payment": [
+                          {
+                            "id": 123,
+                            "type": 1,
+                            "price": 1,
+                            "name": "Dobierka Slovenská pošta"
+                          },
+                          {
+                            "id": 200,
+                            "type": 1,
+                            "price": 1.1,
+                            "name": "Dobierka PPL"
+                          },
+                          {
+                            "id": 300,
+                            "type": 3,
+                            "price": 0,
+                            "name": "Platba kartou"
+                          },
+                          {
+                            "id": 100,
+                            "type": 2,
+                            "price": 0.33,
+                            "name": "Payment on collection"
+                          }
+                        ],
+                        "binding": [
+                          {
+                            "id": 1,
+                            "transportId": 1,
+                            "paymentId": 200
+                          },
+                          {
+                            "id": 5,
+                            "transportId": 1,
+                            "paymentId": 300
+                          },
+                          {
+                            "id": 2,
+                            "transportId": 2,
+                            "paymentId": 123
+                          },
+                          {
+                            "id": 6,
+                            "transportId": 2,
+                            "paymentId": 300
+                          },
+                          {
+                            "id": 4,
+                            "transportId": 4,
+                            "paymentId": 300
+                          },
+                          {
+                            "id": 7,
+                            "transportId": 4,
+                            "paymentId": 100
+                          }
+                        ]
                       }
                     }
                   ]

@@ -1,0 +1,206 @@
+openapi: 3.0.0
+
+info:
+paths:
+
+components:
+  parameters:
+    productId[0]:
+      name: products[0][id]
+      in: query
+      required: true
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[0]:
+      name: products[0][count]
+      in: query
+      required: true
+      description: Number of requested pieces
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+    productId[1]:
+      name: products[1][id]
+      in: query
+      required: false
+      description: product ID
+      schema:
+        $ref: '#/components/schemas/ProductId'
+    productCount[1]:
+      name: products[1][count]
+      description: Number of requested pieces
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/ProductCount'
+
+  schemas:
+    ProductId:
+      type: string
+      description: Unique identifier of the product
+      example: 123
+    ProductCount:
+      type: integer
+      description: Number of ordered pieces (always greater than 0)
+      example: 10
+
+    PaymentDeliveryResponseSchema:
+      type: object
+      required: [transport, payment, binding]
+      description: array of transport, payment, binding
+      properties:
+        transport:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/transport'
+        payment:
+          type: array
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/payment'
+        binding:
+          type: array
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/binding'
+      example:
+        transport :
+          - id: 1
+            type: 1
+            name: "PPL"
+            price: 4
+            description: "Within 1 - 2 working days."
+          - id: 2
+            type: 1
+            name: "Slovenská pošta"
+            price: 3.5
+            description: "Within 2-3 working days."
+          - id: 4
+            type: 2
+            name: "Personal subscription Lozorno"
+            price: 0
+            description: "We will tell you that the goods are ready for collection..."
+            store:
+              id: 2020
+              type: 1
+        payment:
+          - id: 123
+            type: 1
+            price: 1
+            name: "Dobierka Slovenská pošta"
+          - id: 200
+            type: 1
+            price: 1.1
+            name: "Dobierka PPL"
+          - id: 300
+            type: 3
+            price: 0.00
+            name: "Platba kartou"
+          - id: 100
+            type: 2
+            price: 0.33
+            name: "Payment on collection"
+        binding:
+          - id: 1
+            transportId: 1
+            paymentId: 200
+          - id: 5
+            transportId: 1
+            paymentId: 300
+          - id: 2
+            transportId: 2
+            paymentId: 123
+          - id: 6
+            transportId: 2
+            paymentId: 300
+          - id: 4
+            transportId: 4
+            paymentId: 300
+          - id: 7
+            transportId: 4
+            paymentId: 100
+
+    transport:
+      type: object
+      description: transport array
+      required: [id, type, name, price, description]
+      properties:
+        id:
+          description: Delivery ID (chosen by the partner)
+          type: integer
+          example: 1
+        type:
+          description: Delivery type (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-delivery-type" target="_blank">list of supported delivery types</a> CZ / SK)
+          type: integer
+          example: 1
+        name:
+          description: Delivery name
+          type: string
+          example: "PPL"
+        price:
+          description: Delivery price
+          type: number
+          format: double
+        description:
+          description: Delivery description
+          type: string
+          example: "Within 1 - 2 working days."
+        store:
+          description: Branch/pickup point identification
+          type: object
+          properties:
+            type:
+              type: integer
+              description: type of pickup option (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-store" target="_blank">list of supported types</a>)
+            id:
+              type: integer
+              description: ID of the store’s own branch or ID of the external pickup point provider ("shipperId" - <a href="https://api.heureka.cz/depot-api/v1/delivery-places/getshippers" target="_blank">list for CZ Heureka?</a< or <a href="https://api.heureka.sk/depot-api/v1/delivery-places/getshippers" target="_blank">list for SK Heureka</a>)
+    payment:
+      description: payment array
+      type: object
+      required: [id, type, name, price]
+      properties:
+        id:
+          description: Payment ID (chosen by the partner)
+          type: integer
+          example: 100
+        type:
+          description: Payment type (<a href="https://sluzby.heureka.sk/napoveda/marketplace-api/#codes-payment-type" target="_blank">list of supported delivery types</a> CZ / SK)
+          type: integer
+          example: 2
+        name:
+          description: Payment name
+          type: string
+          example: "Payment on collection"
+        price:
+          description: Payment price
+          type: number
+          format: double
+          example: 0.33
+    binding:
+      description: field of links between transport and payment
+      type: object
+      required: [id, transportId, paymentId]
+      properties:
+        id:
+          description: Binding ID (chosen by the partner)
+          type: integer
+          example: 1
+        transportId:
+          description: Delivery ID form transport array above
+          type: integer
+          example: 1
+        paymentId:
+          description: Payment ID from payment array above
+          type: integer
+          example: 200
+
+  responses:
+    PaymentDeliveryResponse:
+      description: Returns shipping and payment options.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PaymentDeliveryResponseSchema'
