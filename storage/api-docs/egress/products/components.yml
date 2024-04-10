@@ -53,25 +53,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductsAvailability'
-          example:
-            - id: ABC123
-              count: 3
-              available: true
-              delivery: 0
-              name: "Tactical Velvet Smoothie pre Apple iPhone 14 57983109814"
-              price: 10.99
-              related:
-                [title: "Free gift bag", title: "Free delivery"]
-              priceTotal: 10.99
-            - id: DFC123
-              count: 2
-              available: true
-              delivery: 1
-              name: "Apple iPhone 10 45EA11111"
-              price: 14.99
-              related:
-                [title: "Free gift baseball cap"]
-              priceTotal: 14.99
         priceSum:
           description: Total price (for all products)
           type: number
